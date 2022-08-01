@@ -17,7 +17,6 @@ class GetData:
         m_col = 25
 
         myRows = []
-        uniqueCountries = []
         myInitials = "JR"
 
         for i in range(2, m_row + 1):
@@ -39,13 +38,7 @@ class GetData:
             rowVals.append(sheet_obj.cell(row = i, column = 26).value) # email address
             rowVals.append(sheet_obj.cell(row = i, column = 27).value) # full name
             rowVals.append(sheet_obj.cell(row = i, column = 24).value) # country
-            val = sheet_obj.cell(row = i, column = 24).value
-            if val not in uniqueCountries:
-                uniqueCountries.append(val)
 
-            myRows.append(rowVals)
-
-        print(uniqueCountries)
         return myRows
         # for row in myRows:
         #     print(row)
