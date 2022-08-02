@@ -22,31 +22,31 @@ class GetData:
         myRows = []
         myInitials = self.initials
 
-        for i in range(1, m_row + 1):
+        for i in range(2, m_row + 1):
             
             rowVals = []
             cell_obj = sheet_obj.cell(row = i, column = 4)
 
-            if cell_obj.value == myInitials:
+            # if cell_obj.value == myInitials:
 
-                rowVals.append(sheet_obj.cell(row = i, column = 2).value) # customer name
-                rowVals.append(sheet_obj.cell(row = i, column = 12).value) # license number
-                rowVals.append(sheet_obj.cell(row = i, column = 19).value) # 2.0 part
-                rowVals.append(sheet_obj.cell(row = i, column = 20).value) # long description
-                rowVals.append(sheet_obj.cell(row = i, column = 13).value) # expiration date
-                rowVals.append(sheet_obj.cell(row = i, column = 10).value) # quantity
-                rowVals.append(sheet_obj.cell(row = i, column = 22).value) # city
-                rowVals.append(sheet_obj.cell(row = i, column = 23).value) # state
-                rowVals.append(sheet_obj.cell(row = i, column = 25).value) # zip code
-                rowVals.append(sheet_obj.cell(row = i, column = 26).value) # email address
-                rowVals.append(sheet_obj.cell(row = i, column = 27).value) # full name
-                rowVals.append(sheet_obj.cell(row = i, column = 24).value) # country
+            rowVals.append(sheet_obj.cell(row = i, column = 2).value)  # customer name
+            rowVals.append(sheet_obj.cell(row = i, column = 12).value) # license number
+            rowVals.append(sheet_obj.cell(row = i, column = 19).value) # 2.0 part
+            rowVals.append(sheet_obj.cell(row = i, column = 20).value) # long description
+            rowVals.append(sheet_obj.cell(row = i, column = 13).value) # expiration date
+            rowVals.append(sheet_obj.cell(row = i, column = 10).value) # quantity
+            rowVals.append(sheet_obj.cell(row = i, column = 22).value) # city
+            rowVals.append(sheet_obj.cell(row = i, column = 23).value) # state
+            rowVals.append(sheet_obj.cell(row = i, column = 25).value) # zip code
+            rowVals.append(sheet_obj.cell(row = i, column = 26).value) # email address
+            rowVals.append(sheet_obj.cell(row = i, column = 27).value) # full name
+            rowVals.append(sheet_obj.cell(row = i, column = 24).value) # country
+            rowVals.append(sheet_obj.cell(row = i, column = 21).value) # address
 
-                myRows.append(rowVals)
-        
         return myRows
         # for row in myRows:
         #     print(row)
+
 
 if __name__ == "__main__":
     ss = GetData(initials="LB")
