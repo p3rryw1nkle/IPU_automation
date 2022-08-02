@@ -4,6 +4,7 @@ from readSpreadsheet import GetData
 import datetime
 import openpyxl
 import shutil
+import re
 
 class WriteData:
     def create_new_file(self, company, initials, dictionary):
@@ -14,17 +15,19 @@ class WriteData:
         # replace fields with information from row
         # save
 
+        formatted_name = company.replace("/", "").replace("\\", "")
+
         name = input(f"Company name {company}, please enter a nickname: ")
         default_email = "None"
 
         sub_list = [i for i in dictionary[company]['email'] if not isinstance(i, int)]
         if len(sub_list) > 0:
-            shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\email\IPU-Clar2.0-{company}-{initials}.xlsx")
-            path = f"spreadsheets\completed\email\IPU-Clar2.0-{company}-{initials}.xlsx"
+            shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\email\IPU-Clar2.0-{formatted_name}-{initials}.xlsx")
+            path = f"spreadsheets\completed\email\IPU-Clar2.0-{formatted_name}-{initials}.xlsx"
             default_email = sub_list[0]
         else:
-            shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\without_email\IPU-Clar2.0-{company}-{initials}.xlsx")
-            path = f"spreadsheets\completed\without_email\IPU-Clar2.0-{company}-{initials}.xlsx"
+            shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\without_email\IPU-Clar2.0-{formatted_name}-{initials}.xlsx")
+            path = f"spreadsheets\completed\without_email\IPU-Clar2.0-{formatted_name}-{initials}.xlsx"
 
         wb_obj = openpyxl.load_workbook(path)
         sheet = wb_obj.active
