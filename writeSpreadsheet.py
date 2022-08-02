@@ -26,16 +26,6 @@ class WriteData:
             shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\without_email\IPU-Clar2.0-{name}-{initials}.xlsx")
             path = f"spreadsheets\completed\without_email\IPU-Clar2.0-{name}-{initials}.xlsx"
 
-        # for email in company['email']:
-        #     if email not in [NULL, 0]: # if there is an email
-        #         shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\email\IPU-Clar2.0-{name}-{initials}.xlsx")
-        #         path = f"spreadsheets\completed\email\IPU-Clar2.0-{name}-{initials}.xlsx"
-        #         default_email = email
-        #         break
-        #     else: # if there is not an email, put in without_email folder
-        #         shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\without_email\IPU-Clar2.0-{name}-{initials}.xlsx")
-        #         path = f"spreadsheets\completed\without_email\IPU-Clar2.0-{name}-{initials}.xlsx"
-
         wb_obj = openpyxl.load_workbook(path)
         sheet = wb_obj.active
 
