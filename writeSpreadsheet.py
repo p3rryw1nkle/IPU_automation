@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from readSpreadsheet import GetData
 from countryCodes import countryCodes
 import openpyxl
@@ -16,7 +17,7 @@ class WriteData:
 
         name = input(f"Company name {row[0]}, please enter a nickname: ")
 
-        if row[9]: # if there is an email
+        if row[9] not in [NULL, 0]: # if there is an email
             shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\email\IPU-Clar2.0-{name}-LB.xlsx")
 
             path = f"spreadsheets\completed\email\IPU-Clar2.0-{name}-LB.xlsx"
@@ -50,10 +51,11 @@ class WriteData:
         sheet.cell(row=19, column=6).value = "8/8/2022 to " + date # quantity
 
         # customer information
-        sheet.cell(row=36, column=2).value = name
-        sheet.cell(row=39, column=2).value = str(row[6]) + " " + str(row[7]) + " " + str(row[8])
-        sheet.cell(row=40, column=2).value = row[11]
-        sheet.cell(row=41, column=2).value = row[10]
+        sheet.cell(row=36, column=2).value = row[0] # name 
+        sheet.cell(row=37, column=2).value = row[12] # address
+        sheet.cell(row=39, column=2).value = str(row[6]) + " " + str(row[7]) + " " + str(row[8]) # city + state + zipcode
+        sheet.cell(row=40, column=2).value = row[11] # country
+        sheet.cell(row=41, column=2).value = row[10] # email
 
         for sheet2 in wb_obj:
             if "Notes" in sheet2.title:
@@ -72,7 +74,6 @@ class WriteData:
 
         for row in myData:
             self.create_new_file(row)
-
 
 if __name__ == "__main__":
     makeFiles = WriteData
