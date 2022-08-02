@@ -1,4 +1,3 @@
-from importlib.util import spec_from_loader
 import openpyxl
 from pprint import pprint
 
@@ -49,6 +48,7 @@ class GetData:
                     self.store_dict[company_name]['long description'].append(long_desc)
                     self.store_dict[company_name]['expiration date'].append(exp_date)
                     self.store_dict[company_name]['quantity'].append(quantity)
+                    self.store_dict[company_name]['email'].append(email_address)
                 else:
                     self.store_dict[company_name] = {'license': [license_num],
                                                      'product id': [prod_id],
@@ -60,8 +60,8 @@ class GetData:
                                                      'state': state,
                                                      'country': country,
                                                      'zip code': zip_code,
-                                                     'email': email_address,
-                                                     'name': full_name
+                                                     'email': [email_address],
+                                                     'contact name': full_name
                                                      }
 
         return self.store_dict
@@ -73,7 +73,8 @@ class GetData:
 
 
 if __name__ == "__main__":
-    ss = GetData(initials='JR')
+    ss = GetData(initials="LB")
+
     dr = ss.get_data()
     pprint(dr)
 
