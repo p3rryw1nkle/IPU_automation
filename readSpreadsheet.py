@@ -1,4 +1,3 @@
-from importlib.util import spec_from_loader
 from pprint import pprint
 import openpyxl
 import logging
@@ -63,7 +62,7 @@ class GetData:
                                                      'country': country,
                                                      'zip code': zip_code,
                                                      'email': [email_address],
-                                                     'name': full_name
+                                                     'contact name': full_name
                                                      }
 
         return self.store_dict
@@ -82,6 +81,7 @@ class GetData:
 
 
 if __name__ == "__main__":
-    ss = GetData(initials='JR')
+    ss = GetData(initials="LB")
+
     dr = ss.get_data()
     ss.check_validity()
