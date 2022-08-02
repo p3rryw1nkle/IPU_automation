@@ -1,9 +1,11 @@
-from importlib.util import spec_from_loader
 import openpyxl
+from countryCodes import countryCodes
 
 class GetData:
+    def __init__(self, initials):
+        self.initials = initials
 
-    def get_data():
+    def get_data(self):
         path = "spreadsheets\Licenses.xlsx"
 
         # To open the workbook
@@ -18,7 +20,7 @@ class GetData:
         m_col = 25
 
         myRows = []
-        myInitials = "JR"
+        myInitials = self.initials
 
         for i in range(1, m_row + 1):
             
@@ -38,6 +40,7 @@ class GetData:
                 rowVals.append(sheet_obj.cell(row = i, column = 25).value) # zip code
                 rowVals.append(sheet_obj.cell(row = i, column = 26).value) # email address
                 rowVals.append(sheet_obj.cell(row = i, column = 27).value) # full name
+                rowVals.append(sheet_obj.cell(row = i, column = 24).value) # country
 
                 myRows.append(rowVals)
         
@@ -46,9 +49,9 @@ class GetData:
         #     print(row)
 
 if __name__ == "__main__":
-    ss = GetData
+    ss = GetData(initials="LB")
 
     dr = ss.get_data()
 
-    for row in dr:
-        print(row)
+    # for row in dr:
+    #     print(row)
