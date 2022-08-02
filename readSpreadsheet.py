@@ -26,8 +26,14 @@ class GetData:
         for i in range(2, m_row + 1):
 
             cell_obj = sheet_obj.cell(row = i, column = 4)
+            completed = sheet_obj.cell(row = i, column = 5).value
 
-            if cell_obj.value is not None and cell_obj.value.lower() == self.initials.lower():
+            if completed and completed.lower() in ["y", "yes"]:
+                is_completed = True
+            else:
+                is_completed = False
+
+            if cell_obj.value is not None and cell_obj.value.lower() == self.initials.lower() and not is_completed:
 
                 company_name = self.append_and_return(sheet_obj, row=i, col=2)
                 license_num = self.append_and_return(sheet_obj, row=i, col=12)
