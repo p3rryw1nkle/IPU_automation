@@ -19,12 +19,12 @@ class WriteData:
 
         sub_list = [i for i in dictionary[company]['email'] if not isinstance(i, int)]
         if len(sub_list) > 0:
-            shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\email\IPU-Clar2.0-{name}-{initials}.xlsx")
-            path = f"spreadsheets\completed\email\IPU-Clar2.0-{name}-{initials}.xlsx"
+            shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\email\IPU-Clar2.0-{company}-{initials}.xlsx")
+            path = f"spreadsheets\completed\email\IPU-Clar2.0-{company}-{initials}.xlsx"
             default_email = sub_list[0]
         else:
-            shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\without_email\IPU-Clar2.0-{name}-{initials}.xlsx")
-            path = f"spreadsheets\completed\without_email\IPU-Clar2.0-{name}-{initials}.xlsx"
+            shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\without_email\IPU-Clar2.0-{company}-{initials}.xlsx")
+            path = f"spreadsheets\completed\without_email\IPU-Clar2.0-{company}-{initials}.xlsx"
 
         wb_obj = openpyxl.load_workbook(path)
         sheet = wb_obj.active
