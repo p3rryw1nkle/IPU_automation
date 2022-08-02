@@ -1,7 +1,7 @@
+from datetime import datetime, timedelta
 from asyncio.windows_events import NULL
-from countryCodes import country_codes as countryCodes
+from countryCodes import country_codes
 from readSpreadsheet import GetData
-import datetime
 import openpyxl
 import shutil
 import re
@@ -36,9 +36,9 @@ class WriteData:
 
         # write country code
         country_code = ""
-        for code in countryCodes:
+        for code in country_codes:
             # print(code)
-            if dictionary[company]['country'].lower() in countryCodes[code]:
+            if dictionary[company]['country'].lower() in country_codes[code]:
                 country_code = code
         if country_code == "":
             print(f"Error finding country code for country {dictionary[company]['country']}")
@@ -52,13 +52,13 @@ class WriteData:
             sheet.cell(row=19 + count, column=3).value = dictionary[company]['quantity'][count] # quantity
             sheet.cell(row=19 + count, column=4).value = 0 # cost
             sheet.cell(row=19 + count, column=5).value = 0 # cost
-            date = datetime.datetime.strftime(dictionary[company]['expiration date'][count], "%m/%d/%Y")
-            sheet.cell(row=19 + count, column=6).value = "8/9/2022 to " + date # quantity
+            date = datetime.strftime(dictionary[company]['expiration date'][count], "%m/%d/%Y")
+            sheet.cell(row=19 + count, column=6).value = f"{(datetime.now()+timedelta(days=7)).month}/{(datetime.now()+timedelta(days=7)).day}/{(datetime.now()+timedelta(days=7)).year} to {date}" # quantity
 
         # customer information
         sheet.cell(row=36, column=2).value = company # name
         sheet.cell(row=37, column=2).value = dictionary[company]['address'] # address
-        sheet.cell(row=39, column=2).value = str(dictionary[company]['city']) + " " + str(dictionary[company]['state']) + " " + str(dictionary[company]['zip code']) # city + state + zipcode
+        sheet.cell(row=39, column=2).value = f'{str(dictionary[company]["city"])} / {str(dictionary[company]["state"])} / {str(dictionary[company]["zip code"])}' # city + state + zipcode
         sheet.cell(row=40, column=2).value = dictionary[company]['country'] # country
         sheet.cell(row=41, column=2).value = dictionary[company]['contact name'] # contact name
         sheet.cell(row=43, column=2).value = default_email # email
@@ -91,4 +91,4 @@ class WriteData:
 
 if __name__ == "__main__":
     makeFiles = WriteData()
-    makeFiles.process_files(initials="LB")
+    makeFiles.process_files(initials="DC")
