@@ -81,7 +81,8 @@ class GetData:
 
 
 if __name__ == "__main__":
-    ss = GetData(initials="LB")
+    ss = GetData(initials="JR")
 
     dr = ss.get_data()
+    pprint(dr)
     ss.check_validity()
