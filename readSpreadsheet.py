@@ -1,6 +1,7 @@
 from importlib.util import spec_from_loader
-import openpyxl
 from pprint import pprint
+import openpyxl
+import logging
 
 
 class GetData:
@@ -49,6 +50,7 @@ class GetData:
                     self.store_dict[company_name]['long description'].append(long_desc)
                     self.store_dict[company_name]['expiration date'].append(exp_date)
                     self.store_dict[company_name]['quantity'].append(quantity)
+                    self.store_dict[company_name]['email'].append(email_address if email_address not in self.store_dict[company_name]['email'] else 0)
                 else:
                     self.store_dict[company_name] = {'license': [license_num],
                                                      'product id': [prod_id],
@@ -60,7 +62,7 @@ class GetData:
                                                      'state': state,
                                                      'country': country,
                                                      'zip code': zip_code,
-                                                     'email': email_address,
+                                                     'email': [email_address],
                                                      'name': full_name
                                                      }
 
@@ -71,11 +73,15 @@ class GetData:
         self.row_vals.append(val)
         return val
 
+    def check_validity(self):
+        logging.basicConfig(filename='./logs/conflicts.log', encoding='utf-8', level=logging.DEBUG)
+        for company in self.store_dict.keys():
+            sub_list = [i for i in self.store_dict[company]['email'] if not isinstance(i, int)]
+            if len(sub_list) > 1:
+                logging.info(f'Multiple emails for company: {company}. Emails found: {sub_list}')
+
 
 if __name__ == "__main__":
     ss = GetData(initials='JR')
     dr = ss.get_data()
-    pprint(dr)
-
-    # for row in dr:
-    #     print(row)
+    ss.check_validity()
