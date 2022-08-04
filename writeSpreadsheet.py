@@ -28,7 +28,11 @@ class WriteData:
         wb_obj = openpyxl.load_workbook(path) # load the blank IPU template
         sheet = wb_obj.active
 
-        sheet.cell(row=3, column=2).value += name # change the IPU code to user provided company nickname
+        for clariti_sheet in wb_obj:
+            if "Clariti" in clariti_sheet.title:
+                sheet = clariti_sheet
+
+        sheet.cell(row=3, column=2).value = "IPU-Clar2.0-" + name # change the IPU code to user provided company nickname
 
         # find and change the country code
         country_code = ""
@@ -39,7 +43,7 @@ class WriteData:
             logging.basicConfig(filename='./logs/vital_errors.log', encoding='utf-8',
                                 level=logging.DEBUG)  # must have a 'logs' folder/directory in the project
             logging.info(f"Error finding country code for country {dictionary[company]['country']}") # if it cannot find the country code, output an error
-        sheet.cell(row=6, column=3).value += country_code
+        sheet.cell(row=6, column=4).value = country_code
 
         # deletes unnecessary country codes
         match country_code:
@@ -88,9 +92,9 @@ class WriteData:
         sheet.cell(row=16, column=1).value = f'DATE: {formatted_date}'
 
         # switch sheet to 'Notes for Operations ONLY'
-        for sheet2 in wb_obj:
-            if "Notes" in sheet2.title:
-                sheet = sheet2
+        for license_sheet in wb_obj:
+            if "Notes" in license_sheet.title:
+                sheet = license_sheet
 
         # append license numbers
         for i in range(0, len(dictionary[company]['license'])):
