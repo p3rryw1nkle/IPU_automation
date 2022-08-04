@@ -1,3 +1,4 @@
+from datetime import datetime
 from pprint import pprint
 import openpyxl
 import logging
@@ -80,6 +81,7 @@ class GetData:
 
     def check_validity(self):
         logging.basicConfig(filename='./logs/conflicts.log', encoding='utf-8', level=logging.DEBUG)
+        logging.info(f'Entry at {datetime.now()}')
         for company in self.store_dict.keys():
             sub_list = [i for i in self.store_dict[company]['email'] if not isinstance(i, int)]
             if len(sub_list) > 1:
