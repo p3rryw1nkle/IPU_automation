@@ -39,7 +39,7 @@ class WriteData:
             logging.basicConfig(filename='./logs/vital_errors.log', encoding='utf-8',
                                 level=logging.DEBUG)  # must have a 'logs' folder/directory in the project
             logging.info(f"Error finding country code for country {dictionary[company]['country']}") # if it cannot find the country code, output an error
-        sheet.cell(row=6, column=3).value += country_code
+        sheet.cell(row=6, column=4).value = country_code
 
         # deletes unnecessary country codes
         match country_code:
