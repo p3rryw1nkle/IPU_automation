@@ -1,14 +1,16 @@
 from datetime import datetime, timedelta
 from asyncio.windows_events import NULL
 from countryCodes import country_codes
-from readSpreadsheet import GetData
+from readSpreadsheet import DataHandler
+from openpyxl.styles import Font
 import openpyxl
+import logging
 import shutil
 import re
 
 class WriteData:
     def create_new_file(self, company, initials, dictionary):
-
+        curr_time = datetime.now()
         formatted_name = company.replace("/", "").replace("\\", "") # if there are slashes in the company name, take them out so we can name the IPU file properly
 
         name = input(f"Company name {company}, please enter a nickname: ") # ask for a company nickname from script runner to put on the IPU form
@@ -34,8 +36,26 @@ class WriteData:
             if dictionary[company]['country'].lower() in country_codes[code]: # if the country is in the dictionary, use the corresponding GL string
                 country_code = code
         if country_code == "":
-            print(f"Error finding country code for country {dictionary[company]['country']}") # if it cannot find the country code, output an error
+            logging.basicConfig(filename='./logs/vital_errors.log', encoding='utf-8',
+                                level=logging.DEBUG)  # must have a 'logs' folder/directory in the project
+            logging.info(f"Error finding country code for country {dictionary[company]['country']}") # if it cannot find the country code, output an error
         sheet.cell(row=6, column=3).value += country_code
+
+        # deletes unnecessary country codes
+        match country_code:
+            case '370-3300-4010-63200':
+                sheet.cell(row=6, column=6).value = ''
+                sheet.cell(row=8, column=6).value = ''
+            case '500-5000-4010-6320':
+                sheet.cell(row=6, column=6).value = ''
+                sheet.cell(row=7, column=6).value = ''
+            case '100-1000-4010-63200':
+                sheet.cell(row=7, column=6).value = ''
+                sheet.cell(row=8, column=6).value = ''
+            case _:
+                logging.basicConfig(filename='./logs/conflicts.log', encoding='utf-8', level=logging.DEBUG)  # must have a 'logs' folder/directory in the project
+                logging.info(f'Unable to delete country codes for {company}. Country code: {country_code} is not accepted.')
+
 
         # for each product license that is stored with the associated company
         for i in range(0, len(dictionary[company]['product id'])):
@@ -47,7 +67,11 @@ class WriteData:
             sheet.cell(row=19 + count, column=5).value = 0 # cost
             date = datetime.strftime(dictionary[company]['expiration date'][count], "%m/%d/%Y") # get expiration date
             # change term/dates so that its a week from today until expiration date
-            sheet.cell(row=19 + count, column=6).value = f"{(datetime.now()+timedelta(days=7)).month}/{(datetime.now()+timedelta(days=7)).day}/{(datetime.now()+timedelta(days=7)).year} to {date}"
+            week_out = curr_time+timedelta(days=7)
+            formatted_date = f'{"0" * (2 - len(str(week_out.month))) + str(week_out.month)}/' \
+                             f'{"0" * (2 - len(str(week_out.day))) + str(week_out.day)}/' \
+                             f'{str(week_out.year)}'
+            sheet.cell(row=19 + count, column=6).value = f"{formatted_date} to {date}"
 
         # customer information
         sheet.cell(row=36, column=2).value = company # full company name
@@ -57,23 +81,28 @@ class WriteData:
         sheet.cell(row=41, column=2).value = dictionary[company]['contact name'] # primary contact name
         sheet.cell(row=43, column=2).value = default_email # email
 
+        # adding the date edited
+        formatted_date = f'{"0" * (2 - len(str(curr_time.month))) + str(curr_time.month)}/' \
+                         f'{"0" * (2 - len(str(curr_time.day))) + str(curr_time.day)}/' \
+                         f'{str(curr_time.year)}'
+        sheet.cell(row=16, column=1).value = f'DATE: {formatted_date}'
+
         # switch sheet to 'Notes for Operations ONLY'
         for sheet2 in wb_obj:
             if "Notes" in sheet2.title:
                 sheet = sheet2
 
         # append license numbers
-        licenses = ""
-        for license in dictionary[company]['license']:
-            licenses += license + ", " # each license is separated by commas
-        licenses = licenses[0:-2] # gets rid of the last ', ' at the end
-        sheet.cell(row=3, column=3).value += licenses # add licenses to cell 'Original Lic#:'
+        for i in range(0, len(dictionary[company]['license'])):
+            sheet.cell(row=4 + i, column=3).value = dictionary[company]['license'][i]  # put licenses under each other
+
+            sheet.cell(row=4 + i, column=3).font = Font(name='Calibri', size=14, color="0070C0", bold=True)
 
         wb_obj.save(path) # save the IPU
 
 
     def process_files(self, initials):
-        myData = GetData(initials=initials) # uses 'readSpreadsheet' to get your assigned IPU data
+        myData = DataHandler(initials=initials) # uses 'readSpreadsheet' to get your assigned IPU data
         data_dict = myData.get_data()
         myData.check_validity() # checks to make sure emails are valid. If not, it will still create the IPUs but it will log conflicting
                                 # emails to logs/conflicts.log
@@ -83,4 +112,4 @@ class WriteData:
 
 if __name__ == "__main__":
     makeFiles = WriteData()
-    makeFiles.process_files(initials="LB") # put your initials here
+    makeFiles.process_files(initials="DC") # put your initials here

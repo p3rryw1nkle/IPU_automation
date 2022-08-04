@@ -28,7 +28,10 @@ class DataHandler:
             completed = sheet_obj.cell(row=i, column=5).value # contains whether or not the IPU has been completed or not
 
             # if the 'completed' cell has a value and its value is "y" or "yes" we skip the line
-            is_completed = True if completed and completed.lower() in ["y", "yes"] else is_completed = False
+            if completed and completed.lower() in ["y", "yes"]:
+                is_completed = True
+            else:
+                is_completed = False
 
             if initials_cell.value is not None and initials_cell.value.lower() == self.initials.lower() and not is_completed:
                 # grab all the IPU information from the specific columns
