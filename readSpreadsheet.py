@@ -21,7 +21,7 @@ class DataHandler:
         sheet_obj = wb_obj.active
 
         # maximum number of rows to read through
-        m_row = 840
+        m_row = 1000
         for i in range(2, m_row + 1): # for each row in the 'Licenses' document
 
             initials_cell = sheet_obj.cell(row=i, column=4) # contains initials of who the IPU has been assigned to
