@@ -8,4 +8,4 @@
 
 ### Also make sure to download and drag in the spreadsheet containing all license information into the 'spreadsheets' folder and rename it to "Licenses.xlsx". The program will look for this file to get the IPU information.
 
-### You can delete the delete_me.txt files in the email & without_email fodlers inside spreadsheets/completed/
+### You can delete the delete_me.txt files in the email & without_email folders inside spreadsheets/completed/
