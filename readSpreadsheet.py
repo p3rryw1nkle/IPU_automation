@@ -87,6 +87,19 @@ class GetData:
             if len(sub_list) > 1: # if there are more than 1 valid emails
                 logging.info(f'Multiple emails for company: {company}. Emails found: {sub_list}') # list them in the logs/conflicts.log file
 
+            # checking to see if the full address entered is valid
+            if not isinstance(self.store_dict[company]['address'], str):
+                logging.info(f'Invalid address for company: {company}. Address entered: {self.store_dict[company]["address"]}')  # list them in the logs/conflicts.log file
+
+            if not isinstance(self.store_dict[company]['city'], str):
+                logging.info(f'Invalid city for company: {company}. City entered: {self.store_dict[company]["address"]}')  # list them in the logs/conflicts.log file
+
+            if not isinstance(self.store_dict[company]['state'], str):
+                logging.info(f'Invalid state for company: {company}. State entered: {self.store_dict[company]["address"]}')  # list them in the logs/conflicts.log file
+
+            if not isinstance(self.store_dict[company]['country'], str):
+                logging.info(f'Invalid country for company: {company}. Country entered: {self.store_dict[company]["address"]}')  # list them in the logs/conflicts.log file
+
 
 if __name__ == "__main__": # this code is only run if you run this script by itself, however the intention is to only run 'writeSpreadsheet'
     ss = GetData(initials="JR")
