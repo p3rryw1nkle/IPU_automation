@@ -11,4 +11,4 @@
 
 ### 4. Any delete_me.txt files inside folders can be deleted
 
-### 5. fixSpreadsheet may be used if there's any IPUs that need to be fixed. Place the IPUs that need to be fixed in spreadsheets/need_fixed folder, then edit fixSpreadsheet so it edits them as needed. The fixed spreadsheets will be written to spreadsheets/fixed, which you can then upload and replace the old ones.
+### 5. fixSpreadsheet may be used if there's any IPUs that need to be fixed. Place the IPUs that need to be fixed in spreadsheets/need_fixed folder, then edit fixSpreadsheet so it edits them as needed. Run the script and the fixed spreadsheets will be written to spreadsheets/fixed, which you can then upload and replace the old ones.
