@@ -8,4 +8,6 @@
 
 ### Also make sure to download and drag in the spreadsheet containing all license information into the 'spreadsheets' folder and rename it to "Licenses.xlsx". The program will look for this file to get the IPU information.
 
-### You can delete the delete_me.txt files in the email & without_email folders inside spreadsheets/completed/
+### Any delete_me.txt files inside folders can be deleted
+
+### fixSpreadsheet may be used if there's any IPUs that need to be go back and fixed. Place the IPUs that need to be fixed in spreadsheets/need_fixed folder, then edit fixSpreadsheet so it fixes them like how you want. The fixed spreadsheets will be written to spreadsheets/fixed, which you can then upload and replace the old ones.
