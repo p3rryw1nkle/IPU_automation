@@ -1,4 +1,12 @@
-country_codes = {'370-3300-4010-63200': ['australia', 'isle of man', 'philippines', 'japan', 'ethiopia', 'belgium', 'taiwan', 'india', 'russian federation', 'china', 'korea, republic of', 'malaysia', 'hong kong', 'kazakhstan', 'new zealand', 'indonesia', 'singapore', 'viet nam'],
-                 '500-5000-4010-6320': ['denmark', 'united kingdom', 'france', 'germany', 'italy', 'greece', 'sweden', 'spain', 'czech republic', 'slovakia', 'netherlands', 'norway', 'finland', 'switzerland', 'saudi arabia', 'burkina faso', 'south africa'],
-                 '100-1000-4010-63200':   ['north america', 'usa', 'united states of america', 'united states', 'canada', 'brazil', 'colombia', 'guatemala', 'chile', 'costa rica', 'argentina', 'mexico']
-                 }
+country_codes = {
+            'na': '100-1000-4010-63200',
+            'cala': '100-1000-4010-63200',
+            'amer': '100-1000-4010-63200',
+            'apac': '370-3300-4010-63200',
+            'emea': '500-5000-4010-6320'
+        }
+
+# country_codes = {'370-3300-4010-63200': ['australia', 'isle of man', 'philippines', 'japan', 'ethiopia', 'belgium', 'taiwan', 'india', 'russian federation', 'china', 'korea, republic of', 'malaysia', 'hong kong', 'kazakhstan', 'new zealand', 'indonesia', 'singapore', 'viet nam'],
+#                  '500-5000-4010-6320': ['denmark', 'united kingdom', 'france', 'germany', 'italy', 'greece', 'sweden', 'spain', 'czech republic', 'slovakia', 'netherlands', 'norway', 'finland', 'switzerland', 'saudi arabia', 'burkina faso', 'south africa'],
+#                  '100-1000-4010-63200':   ['north america', 'usa', 'united states of america', 'united states', 'canada', 'brazil', 'colombia', 'guatemala', 'chile', 'costa rica', 'argentina', 'mexico']
+#                  }

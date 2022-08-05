@@ -48,6 +48,7 @@ class DataHandler:
                 email_address = self.append_and_return(sheet_obj, row=i, col=26)
                 full_name = self.append_and_return(sheet_obj, row=i, col=27)
                 country = self.append_and_return(sheet_obj, row=i, col=24)
+                theater = self.append_and_return(sheet_obj, row=i, col=30)
 
                 # if the company already has an entry in the dictionary, then there are multiple products/licenses.
                 # So we are going to add the additional information to the company's dictionary.
@@ -72,16 +73,23 @@ class DataHandler:
                                                      'country': country,
                                                      'zip code': zip_code,
                                                      'email': [email_address],
-                                                     'contact name': full_name
+                                                     'contact name': full_name,
+                                                     'theater': theater
                                                      }
 
         return self.store_dict
 
     def append_and_return(self, sheet_obj, row, col):
         val = sheet_obj.cell(row=row, column=col).value
+        val = self.convert_null(val)
         self.row_vals.append(val)
         return val
 
+    def convert_null(self, value): # converts null values to zeros
+        if value == None or (isinstance(value, str) and value.lower() in ["none", "#n/a", "n/a", "null"]):
+            return 0
+        else:
+            return value
 
     def check_validity(self):
         """

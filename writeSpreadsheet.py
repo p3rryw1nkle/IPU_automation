@@ -18,11 +18,11 @@ class WriteData:
 
         sub_list = [i for i in dictionary[company]['email'] if not isinstance(i, int)] # gets a list of only the valid emails
         if len(sub_list) > 0: # if there are valid emails, then put the IPU in the spreadsheets/completed/email folder
-            shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\email\IPU-Clar2.0-{formatted_name}-{initials}.xlsx") # copy the IPU template, rename it, and put it in the proper folder
+            shutil.copyfile("spreadsheets\IPU_form.xlsx", f"spreadsheets\completed\email\IPU-Clar2.0-{formatted_name}-{initials}.xlsx") # copy the IPU template, rename it, and put it in the proper folder
             path = f"spreadsheets\completed\email\IPU-Clar2.0-{formatted_name}-{initials}.xlsx" # change the file path to access the new blank IPU
             default_email = sub_list[0] # by default, the email that will be used is the first one read in from the company
         else: # if there are no emails found, copy the IPU template and rename it but put it in the 'without_email' folder
-            shutil.copyfile("spreadsheets\IPU.xlsx", f"spreadsheets\completed\without_email\IPU-Clar2.0-{formatted_name}-{initials}.xlsx")
+            shutil.copyfile("spreadsheets\IPU_form.xlsx", f"spreadsheets\completed\without_email\IPU-Clar2.0-{formatted_name}-{initials}.xlsx")
             path = f"spreadsheets\completed\without_email\IPU-Clar2.0-{formatted_name}-{initials}.xlsx"
 
         wb_obj = openpyxl.load_workbook(path) # load the blank IPU template
@@ -37,28 +37,19 @@ class WriteData:
         # find and change the country code
         country_code = ""
         for code in country_codes: # this uses a dictionary of country codes, which you can find in 'countryCodes.py'
-            if dictionary[company]['country'].lower() in country_codes[code]: # if the country is in the dictionary, use the corresponding GL string
-                country_code = code
+            if dictionary[company]['theater'].lower() == code: # if the country is in the dictionary, use the corresponding GL string
+                country_code = country_codes[code]
         if country_code == "":
             logging.basicConfig(filename='./logs/vital_errors.log', encoding='utf-8',
                                 level=logging.DEBUG)  # must have a 'logs' folder/directory in the project
-            logging.info(f"Error finding country code for country {dictionary[company]['country']}") # if it cannot find the country code, output an error
-        sheet.cell(row=6, column=4).value = country_code
+            logging.info(f"Error finding country code for company {company}") # if it cannot find the country code, output an error
+            sheet.cell(row=6, column=4).value = 0
+        else:
+            sheet.cell(row=6, column=4).value = country_code
 
-        # deletes unnecessary country codes
-        match country_code:
-            case '370-3300-4010-63200':
-                sheet.cell(row=6, column=6).value = ''
-                sheet.cell(row=8, column=6).value = ''
-            case '500-5000-4010-6320':
-                sheet.cell(row=6, column=6).value = ''
-                sheet.cell(row=7, column=6).value = ''
-            case '100-1000-4010-63200':
-                sheet.cell(row=7, column=6).value = ''
-                sheet.cell(row=8, column=6).value = ''
-            case _:
-                logging.basicConfig(filename='./logs/conflicts.log', encoding='utf-8', level=logging.DEBUG)  # must have a 'logs' folder/directory in the project
-                logging.info(f'Unable to delete country codes for {company}. Country code: {country_code} is not accepted.')
+        # make sure all country code fields are blank
+        for i in range(0, 4):
+            sheet.cell(row=5+i, column=6).value = ''
 
 
         # for each product license that is stored with the associated company
@@ -98,9 +89,8 @@ class WriteData:
 
         # append license numbers
         for i in range(0, len(dictionary[company]['license'])):
-            sheet.cell(row=4 + i, column=3).value = dictionary[company]['license'][i]  # put licenses under each other
-
-            sheet.cell(row=4 + i, column=3).font = Font(name='Calibri', size=14, color="0070C0", bold=True)
+            sheet.cell(row=3 + i, column=4).value = dictionary[company]['license'][i]  # put licenses under each other
+            sheet.cell(row=3 + i, column=4).font = Font(name='Calibri', size=18, color="0070C0", bold=True)
 
         wb_obj.save(path) # save the IPU
 
@@ -116,4 +106,4 @@ class WriteData:
 
 if __name__ == "__main__":
     makeFiles = WriteData()
-    makeFiles.process_files(initials="DC") # put your initials here
+    makeFiles.process_files(initials="LB") # put your initials here
