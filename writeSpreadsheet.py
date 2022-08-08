@@ -3,17 +3,37 @@ from asyncio.windows_events import NULL
 from countryCodes import country_codes
 from readSpreadsheet import DataHandler
 from openpyxl.styles import Font
+from nicknamer import NickName
 import openpyxl
 import logging
 import shutil
 import re
 
 class WriteData:
+    def __init__(self):
+        self.nicknames = {}
+        self.conflicts = set()
+        pass
+
     def create_new_file(self, company, initials, dictionary):
         curr_time = datetime.now()
         formatted_name = company.replace("/", "").replace("\\", "") # if there are slashes in the company name, take them out so we can name the IPU file properly
 
-        name = input(f"Company name {company}, please enter a nickname: ") # ask for a company nickname from script runner to put on the IPU form
+        # name = input(f"Company name {company}, please enter a nickname: ") # ask for a company nickname from script runner to put on the IPU form
+        name = ""
+        for nickname in self.nicknames:
+            if self.nicknames[nickname] == company:
+                name = nickname
+                break
+        if name == "":
+            while True:
+                name = input(f"nickname not found for company {company}, please enter a nickname of less than 8 characters")
+                if len(name) > 8:
+                    print("nickname too long! please enter a nickname less than 8 characters")
+                else:
+                    break
+            self.nicknames[name] = company
+        
         default_email = "None"
 
         sub_list = [i for i in dictionary[company]['email'] if not isinstance(i, int)] # gets a list of only the valid emails
@@ -94,15 +114,52 @@ class WriteData:
 
         wb_obj.save(path) # save the IPU
 
+    def create_nicknames(self, dictionary):
+        nicknamer = NickName()
+        self.nicknames = nicknamer.nickname(dictionary)
+
+    def mark_completed(self, companies):
+        # only mark an IPO as completed if there are no conflicts
+
+        path = f"spreadsheets\Licenses.xlsx"
+        wb_obj = openpyxl.load_workbook(path) # load in the Licenses IPU template
+        sheet = wb_obj.active
+
+        m_row = 1000
+        for i in range(2, m_row + 1):
+            company = sheet.cell(column=2, row = i).value
+            if company in companies and company not in self.conflicts: # if the company's IPO was processed and has no conflicts
+                print(f"marking company {company} as complete...")
+                nickname = "" # find the company's nickname
+                nicknameFound = False
+                for nn in self.nicknames:
+                    if self.nicknames[nn] == company:
+                        sheet.cell(column=5, row = i).value = "YES"
+                        sheet.cell(column=6, row = i).value = f"IPU-Clar2.0-{nn}"
+                        nicknameFound = True
+                        break
+
+                if not nicknameFound:
+                    print(f"Error finding IPU code for company {company}, unable to mark as complete")       
+            
+        for company in self.conflicts:
+            print(f"IPO information conflicts for company {company}, please review logs/conflicts.log before marking as completed")
+
+        wb_obj.save(path)
 
     def process_files(self, initials):
         myData = DataHandler(initials=initials) # uses 'readSpreadsheet' to get your assigned IPU data
         data_dict = myData.get_data()
-        myData.check_validity() # checks to make sure emails are valid. If not, it will still create the IPUs but it will log conflicting
+        self.conflicts = myData.check_validity() # checks to make sure emails are valid. If not, it will still create the IPUs but it will log conflicting
                                 # emails to logs/conflicts.log
+        self.create_nicknames(dictionary=data_dict)
 
         for company in data_dict.keys(): # for each company in the data dictionary
             self.create_new_file(company, initials=initials, dictionary=data_dict) # create a new IPU file
+
+        self.mark_completed(companies=data_dict)
+
+        
 
 if __name__ == "__main__":
     makeFiles = WriteData()

@@ -1,6 +1,11 @@
-spreadsheets/completed/email/*
+spreadsheets/completed/email/delete_me.txt
+spreadsheets/completed/without_email/delete_me.txt
 spreadsheets/completed/without_email/*
+spreadsheets/completed/email/*
+
+spreadsheets/fixed/*
+spreadsheets/need_fixed/*
 
 logs/*
 
-qt
+qt.py
