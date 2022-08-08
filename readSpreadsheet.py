@@ -96,25 +96,35 @@ class DataHandler:
         Checks the validity of each email and full address stored for each company then logs which companies have errors
         :return: None
         """
+        conflicting_companies = set()
+
         logging.basicConfig(filename='./logs/conflicts.log', encoding='utf-8', level=logging.DEBUG) # must have a 'logs' folder/directory in the project
         logging.info(f'Entry at {datetime.now()}')
         for company in self.store_dict.keys():
             sub_list = [i for i in self.store_dict[company]['email'] if not isinstance(i, int)] # for each company, take only valid emails (i.e. not Null, 0, etc.)
             if len(sub_list) > 1: # if there are more than 1 valid emails
+                conflicting_companies.add(company)
                 logging.info(f'Multiple emails for company: {company}. Emails found: {sub_list}') # list them in the logs/conflicts.log file
 
             # checking to see if the full address entered is valid
             if not isinstance(self.store_dict[company]['address'], str):
+                # conflicting_companies.add(company)
                 logging.info(f'Invalid address for company: {company}. Address entered: {self.store_dict[company]["address"]}')  # list them in the logs/conflicts.log file
 
             if not isinstance(self.store_dict[company]['city'], str):
+                # conflicting_companies.add(company)
                 logging.info(f'Invalid city for company: {company}. City entered: {self.store_dict[company]["city"]}')  # list them in the logs/conflicts.log file
 
             if not isinstance(self.store_dict[company]['state'], str):
+                # conflicting_companies.add(company)
                 logging.info(f'Invalid state for company: {company}. State entered: {self.store_dict[company]["state"]}')  # list them in the logs/conflicts.log file
 
             if not isinstance(self.store_dict[company]['country'], str):
+                # conflicting_companies.add(company)
                 logging.info(f'Invalid country for company: {company}. Country entered: {self.store_dict[company]["country"]}')  # list them in the logs/conflicts.log file
+        
+        return conflicting_companies
+
 
 
 if __name__ == "__main__": # this code is only run if you run this script by itself, however the intention is to only run 'writeSpreadsheet'
