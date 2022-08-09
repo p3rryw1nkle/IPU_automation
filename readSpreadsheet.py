@@ -99,7 +99,7 @@ class DataHandler:
         conflicting_companies = set()
 
         logging.basicConfig(filename='./logs/conflicts.log', encoding='utf-8', level=logging.DEBUG) # must have a 'logs' folder/directory in the project
-        logging.info(f'Entry at {datetime.now()}')
+        logging.info(f'Entry at {datetime.now().month}/{datetime.now().day}/{datetime.now().year}  {datetime.now().time()}')
         for company in self.store_dict.keys():
             sub_list = [i for i in self.store_dict[company]['email'] if not isinstance(i, int)] # for each company, take only valid emails (i.e. not Null, 0, etc.)
             if len(sub_list) > 1: # if there are more than 1 valid emails
