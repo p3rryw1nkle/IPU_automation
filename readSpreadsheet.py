@@ -3,8 +3,10 @@ from pprint import pprint
 import openpyxl
 import logging
 
-
 class DataHandler:
+    '''
+    This class is responsible for reading the data from the Licensing spreadsheet and storing it in a dictionary.
+    '''
     def __init__(self, initials):
         self.store_dict = {} # stores all IPU license information in a dictionary (data storage object)
         self.row_vals = []
@@ -129,7 +131,6 @@ class DataHandler:
 
 if __name__ == "__main__": # this code is only run if you run this script by itself, however the intention is to only run 'writeSpreadsheet'
     ss = DataHandler(initials="JR")
-
     dr = ss.get_data()
     pprint(dr)
     ss.check_validity()

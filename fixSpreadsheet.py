@@ -5,8 +5,14 @@ import shutil
 import os
 
 class FixSpreadsheet:
+    '''
+    This class is used to fix the spreadsheets that are in the 'need_fixed' folder.
+    '''
 
     def fix_data(self):
+        '''
+        This function is used to fix the data in the spreadsheets that are in the 'need_fixed' folder.
+        '''
         directory = "spreadsheets/need_fixed"
 
         for file in os.listdir(directory):
@@ -55,8 +61,3 @@ class FixSpreadsheet:
 if __name__ == "__main__":
     fixer = FixSpreadsheet()
     fixer.fix_data()
-
-# First Fix:
-# get rid of unused GLU strings
-# separate Licenses in a nicer format
-# add date

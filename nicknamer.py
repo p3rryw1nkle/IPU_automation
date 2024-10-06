@@ -1,9 +1,10 @@
 class NickName:
+    '''
+    NickName class is used to generate nicknames for companies based on their names. The nicknames are used as IPU codes for the companies.
+    '''
     def nickname(self, companies):
         nicknames = {}
-
         for company in companies:
-
             words_in_name = company.split(' ')
 
             nickname = ''
@@ -22,12 +23,6 @@ class NickName:
             nickname = ''.join(ch for ch in nickname if ch.isalnum())
 
             if nickname in nicknames:
-                # while True:
-                #     nickname = input(f"nickname {nickname} for company '{company}' conflicts with nickname for company '{nicknames[nickname]}', please enter another nickname: ")
-                #     if len(nickname) > 8:
-                #         print("nickname too long! please enter a nickname (IPU code) that's 8 characters or less")
-                #     else:
-                #         break
                 nickname = nickname[0:7] + words_in_name[1][0]
                 
                 nickname = nickname.upper()

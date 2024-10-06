@@ -10,6 +10,9 @@ import shutil
 import re
 
 class WriteData:
+    '''
+    This class is responsible for writing the data from the Licensing spreadsheet and storing it in an IPU form.
+    '''
     def __init__(self):
         self.nicknames = {}
         self.conflicts = set()
@@ -160,7 +163,6 @@ class WriteData:
         self.mark_completed(companies=data_dict)
 
         
-
 if __name__ == "__main__":
     makeFiles = WriteData()
     makeFiles.process_files(initials="LB") # put your initials here
